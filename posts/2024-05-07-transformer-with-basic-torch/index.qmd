@@ -1,0 +1,53 @@
+---
+title: "Building decoder only transformer similar to chatGPT with basic torch"
+author: "ishan dahal"
+date: "2024-05-07"
+categories: [deep learning, code, auto-regressive]
+image: "image.jpg"
+---
+I spent some time coding up chatGPT using torch modules other than self-attention modules. The outcome was an auto-regressive (consumes its own output to produce more output) model trained on Shakespear's writing. The output was by no means spectacular but wasn't too bad for a hacking at it for a couple of days and training for ~10 minutes. The comparison of the model's output prior to training and after is quite a significant jump. The output before training is random garbage as expected but the output after training follows Shakespear like dialogues.
+
+
+Below is the output of the model before training:
+
+>sJgGNSW'Q!CmQx!MEcPl\$.HjGA-G?CpK &tM.X\$\$oCaecJz-kmGKyEtkYAnx.p.EtXV.Ym$fE-zmksK;iuHECiZRaBXOSjPYj  
+
+Here is the model output after training for 10000 steps:
+
+>
+>silter arturiarlys his blies.
+>
+>CORIOLANUS:
+>It foe,
+>The colse the warwech and apped!
+>Would and heaven'd be! Efrerce's toly neithe own is.
+>
+>POLYCUS:
+>Whom I have make usjulier'd?
+>
+>KING EFORY VON YORY:
+>I what you hear somes, to might thine with ther half, hose secronior:
+>
+>ESTERded liever men.
+>Bene again sir, not't
+>As sweet blood with arm he at then hear,
+>Or cravion sleep'd on own thou wouldstn!
+>Hing in sorrow semkior propects,
+>We this most: who fatthing this:
+>You, meap to Motriss! and ears
+>The will by arm her sales: brother! Angue with he weart him?
+>
+>MENENE'O:
+>Now a counfectly grace, center-hour no plovous
+>cht in with tyiots merch by unwas speak a,
+>or stire, the hock from of sorrow fears.
+
+
+
+
+
+
+
+
+
+
