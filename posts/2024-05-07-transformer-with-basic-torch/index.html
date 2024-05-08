@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="ishan dahal">
+<meta name="dcterms.date" content="2024-05-07">
 
-<title>ishan dahal - Some thoughts:</title>
+<title>ishan dahal - Building decoder only transformer similar to chatGPT with basic torch</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,24 +25,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -68,77 +68,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ishan dahal</span>
     </a>
   </div>
@@ -149,7 +91,7 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
@@ -167,116 +109,71 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Some thoughts:</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Building decoder only transformer similar to chatGPT with basic torch</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">deep learning</div>
+                <div class="quarto-category">code</div>
+                <div class="quarto-category">auto-regressive</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>ishan dahal </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 7, 2024</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="auto-regressive">auto-regressive <span class="quarto-category-count">(1)</span></div><div class="category" data-category="code">code <span class="quarto-category-count">(1)</span></div><div class="category" data-category="deep learning">deep learning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>I spent some time coding up chatGPT using torch modules other than self-attention modules. The outcome was an auto-regressive (consumes its own output to produce more output) model trained on Shakespear’s writing. The output was by no means spectacular but wasn’t too bad for hacking at it couple of days and training for ~10 minutes. The comparison of the model’s output prior to training and after is quite a significant jump. The output before training is random garbage as expected but the output after training follows Shakespear like dialogues structure.</p>
+<p><a href="https://github.com/ishandahal/transformer-playground/blob/main/src/train_chatGPT.py" target="_blank">Link to Code</a></p>
+<p>This is a decoder only model so the fun part was coding the masked self-attention layer. In self attention all tokens are allowed to incorporate all tokens during creation of the context vector. Self attention is used in encoder only model where the end goal is to extract feature representation of the sequence which can be used downstream for other tasks like sentence classification. In masked self-attention on the other hand the model is not allowed to incorporate the tokens in the future. It can only look incorporate tokens in the past upto the context length specified during data creation. This is key because we want the model to generate new tokens based on the past tokens it has seen not the future.</p>
+<p><strong>Output of the model before training:</strong></p>
+<blockquote class="blockquote">
+<p>sJgGNSW’Q!CmQx!MEcPl$.HjGA-G?CpK &amp;tM.X$$oCaecJz-kmGKyEtkYAnx.p.EtXV.Ym$fE-zmksK;iuHECiZRaBXOSjPYj</p>
+</blockquote>
+<p><strong>Output after training for 10000 steps:</strong></p>
+<blockquote class="blockquote">
+<p>silter arturiarlys his blies.</p>
+<p>CORIOLANUS: It foe, The colse the warwech and apped! Would and heaven’d be! Efrerce’s toly neithe own is.</p>
+<p>POLYCUS: Whom I have make usjulier’d?</p>
+<p>KING EFORY VON YORY: I what you hear somes, to might thine with ther half, hose secronior:</p>
+<p>ESTERded liever men. Bene again sir, not’t As sweet blood with arm he at then hear, Or cravion sleep’d on own thou wouldstn! Hing in sorrow semkior propects, We this most: who fatthing this: You, meap to Motriss! and ears The will by arm her sales: brother! Angue with he weart him?</p>
+<p>MENENE’O: Now a counfectly grace, center-hour no plovous cht in with tyiots merch by unwas speak a, or stire, the hock from of sorrow fears.</p>
+</blockquote>
+<p>Ofcourse the content of the text is totally non-sensical but we can see that the model has learned quite a lot compared to its untrained days. I have truncated the output for the sake of brevity here. The output follows writing style of an english sentence with (somewhat) appropriate use of punctuations. The output also contains inappropriate use of uppercase in the middle of the sentence.</p>
+<p>I did not push too hard to improve performance by tuning the hyperparameters. For this exercise I was interested in coding up the inner workings of a transformer based model to get a deeper understanding. I am satisfied with what I was able to get out of this exercise. It is quite interesting to see that the capacity of the architecture. It gives a sense of appreciation as to what it has achieved when trained at scale.</p>
+<p>I want to thank Andrej Karpathy for <a href="https://www.youtube.com/watch?v=kCc8FmEb1nY&amp;list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ&amp;index=14" target="_blank">this</a> excellent tutorial on the inner workings of chatGPT.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="deep learning,code,auto-regressive" data-listing-date-sort="1715054400000" data-listing-file-modified-sort="1715211535977" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="493">
-<div class="thumbnail">
-<p><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external"></a></p><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-<p><img src="./posts/2024-05-07-transformer-with-basic-torch/image.jpg" class="thumbnail-image"></p>
-</a><p><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">Building decoder only transformer similar to chatGPT with basic torch</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('deep learning'); return false;">
-deep learning
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
-code
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('auto-regressive'); return false;">
-auto-regressive
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">I spent some time coding up chatGPT using torch modules other than self-attention modules. The outcome was an auto-regressive (consumes its own output to produce more…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-<div class="listing-date">
-May 7, 2024
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="news" data-listing-date-sort="1714795200000" data-listing-file-modified-sort="1715211637524" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="21">
-<div class="thumbnail">
-<p><a href="./posts/welcome/index.html" class="no-external"></a></p><a href="./posts/welcome/index.html" class="no-external">
-<p class="card-img-top"><img src="posts/welcome/thumbnail.jpg"  class="thumbnail-image card-img"/></p>
-</a><p><a href="./posts/welcome/index.html" class="no-external"></a></p>
-</div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/welcome/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('news'); return false;">
-news
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/welcome/index.html" class="no-external">This is place for my learnings, experiments and ideas that I have come accross that my future self will appreciate.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-May 4, 2024
-</div>
-<div class="listing-author">
-Ishan Dahal
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

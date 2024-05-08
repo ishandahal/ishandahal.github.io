@@ -7,24 +7,24 @@
     "text": "Sr. Data Scientist at Feedzai"
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
+    "objectID": "posts/2024-05-07-transformer-with-basic-torch/index.html",
+    "href": "posts/2024-05-07-transformer-with-basic-torch/index.html",
+    "title": "Building decoder only transformer similar to chatGPT with basic torch",
     "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+    "text": "I spent some time coding up chatGPT using torch modules other than self-attention modules. The outcome was an auto-regressive (consumes its own output to produce more output) model trained on Shakespear’s writing. The output was by no means spectacular but wasn’t too bad for hacking at it couple of days and training for ~10 minutes. The comparison of the model’s output prior to training and after is quite a significant jump. The output before training is random garbage as expected but the output after training follows Shakespear like dialogues structure.\nLink to Code\nThis is a decoder only model so the fun part was coding the masked self-attention layer. In self attention all tokens are allowed to incorporate all tokens during creation of the context vector. Self attention is used in encoder only model where the end goal is to extract feature representation of the sequence which can be used downstream for other tasks like sentence classification. In masked self-attention on the other hand the model is not allowed to incorporate the tokens in the future. It can only look incorporate tokens in the past upto the context length specified during data creation. This is key because we want the model to generate new tokens based on the past tokens it has seen not the future.\nOutput of the model before training:\n\nsJgGNSW’Q!CmQx!MEcPl$.HjGA-G?CpK &tM.X$$oCaecJz-kmGKyEtkYAnx.p.EtXV.Ym$fE-zmksK;iuHECiZRaBXOSjPYj\n\nOutput after training for 10000 steps:\n\nsilter arturiarlys his blies.\nCORIOLANUS: It foe, The colse the warwech and apped! Would and heaven’d be! Efrerce’s toly neithe own is.\nPOLYCUS: Whom I have make usjulier’d?\nKING EFORY VON YORY: I what you hear somes, to might thine with ther half, hose secronior:\nESTERded liever men. Bene again sir, not’t As sweet blood with arm he at then hear, Or cravion sleep’d on own thou wouldstn! Hing in sorrow semkior propects, We this most: who fatthing this: You, meap to Motriss! and ears The will by arm her sales: brother! Angue with he weart him?\nMENENE’O: Now a counfectly grace, center-hour no plovous cht in with tyiots merch by unwas speak a, or stire, the hock from of sorrow fears.\n\nOfcourse the content of the text is totally non-sensical but we can see that the model has learned quite a lot compared to its untrained days. I have truncated the output for the sake of brevity here. The output follows writing style of an english sentence with (somewhat) appropriate use of punctuations. The output also contains inappropriate use of uppercase in the middle of the sentence.\nI did not push too hard to improve performance by tuning the hyperparameters. For this exercise I was interested in coding up the inner workings of a transformer based model to get a deeper understanding. I am satisfied with what I was able to get out of this exercise. It is quite interesting to see that the capacity of the architecture. It gives a sense of appreciation as to what it has achieved when trained at scale.\nI want to thank Andrej Karpathy for this excellent tutorial on the inner workings of chatGPT."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "This is place for my learnings, experiments and ideas that I have come accross that my future self will appreciate."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Some thoughts:",
     "section": "",
-    "text": "Post With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nMay 7, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 4, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "Building decoder only transformer similar to chatGPT with basic torch\n\n\n\n\n\n\ndeep learning\n\n\ncode\n\n\nauto-regressive\n\n\n\n\n\n\n\n\n\nMay 7, 2024\n\n\nishan dahal\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 4, 2024\n\n\nIshan Dahal\n\n\n\n\n\n\nNo matching items"
   }
 ]
