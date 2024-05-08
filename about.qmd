@@ -1,0 +1,19 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/ishan-d-8ab078136/
+    - icon: github
+      text: Github
+      href: https://github.com/ishandahal/
+<!-- - icon: twitter -->
+<!--   text: Twitter -->
+<!--   href: https://twitter.com -->
+
+---
+
+Sr. Data Scientist at [Feedzai](https://feedzai.com)
