@@ -4,7 +4,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Sr. Data Scientist at Feedzai"
+    "text": "Sr. Data Scientist at Feedzai\nMy interest lies at the intersection of software development and machine learning.\n\nRecent endeavors:\n\nGenerating baby names with Multilayered Perceptron\nSelf-attention with basic torch tensors\nGenerating shakespear with chatGPT like decoder"
   },
   {
     "objectID": "posts/2024-05-07-transformer-with-basic-torch/index.html",
@@ -23,7 +23,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Some thoughts:",
+    "title": "Collection",
     "section": "",
     "text": "Building decoder only transformer similar to chatGPT with basic torch\n\n\n\n\n\n\ndeep learning\n\n\ncode\n\n\nauto-regressive\n\n\n\n\n\n\n\n\n\nMay 7, 2024\n\n\nishan dahal\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nMay 4, 2024\n\n\nIshan Dahal\n\n\n\n\n\n\nNo matching items"
   }
