@@ -17,3 +17,10 @@ about:
 ---
 
 Sr. Data Scientist at [Feedzai](https://feedzai.com)
+
+My interest lies at the intersection of software development and machine learning.
+
+### Recent endeavors:
+* <a href="https://github.com/ishandahal/simple-language-model/blob/main/trigram_model.ipynb" target="_blank">Generating baby names with Multilayered Perceptron</a>
+* <a href="https://github.com/ishandahal/transformer-playground/blob/main/self_attention_from_scratch.ipynb" target="_blank">Self-attention with basic torch tensors</a>
+* <a href="/posts/2024-05-07-transformer-with-basic-torch/index.qmd" target="_blank">Generating shakespear with chatGPT like decoder</a>

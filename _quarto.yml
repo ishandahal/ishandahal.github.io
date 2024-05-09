@@ -6,8 +6,9 @@ website:
   navbar:
     right:
       - about.qmd
+      - index.qmd
       - icon: github
-        href: hhttps://github.com/ishandahal/
+        href: https://github.com/ishandahal/
       # - icon: twitter
       # href: https://twitter.com
 format:
