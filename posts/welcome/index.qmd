@@ -1,0 +1,11 @@
+---
+title: "Welcome"
+author: "Ishan Dahal"
+date: "2024-05-04"
+categories: [news]
+---
+
+This is place for my learnings, experiments and ideas that I have come accross that my future self will appreciate. 
+
+![](thumbnail.jpg)
+
