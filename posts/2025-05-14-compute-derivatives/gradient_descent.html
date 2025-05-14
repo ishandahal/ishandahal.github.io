@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="ishan dahal">
+<meta name="dcterms.date" content="2025-05-14">
 
-<title>Collection – ishan dahal</title>
+<title>Breaking down Back Propagation – ishan dahal</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +22,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,77 +104,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ishan dahal</span>
     </a>
   </div>
@@ -150,11 +127,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Collection</span></a>
   </li>  
   <li class="nav-item compact">
@@ -172,140 +149,134 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Collection</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Breaking down Back Propagation</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">deep learning</div>
+                <div class="quarto-category">code</div>
+                <div class="quarto-category">derivatives</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>ishan dahal </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 14, 2025</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="YXV0by1yZWdyZXNzaXZl">auto-regressive <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29kZQ==">code <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZGVlcCUyMGxlYXJuaW5n">deep learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZGVyaXZhdGl2ZXM=">derivatives <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-
-
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ZGVlcCUyMGxlYXJuaW5nJTJDY29kZSUyQ2Rlcml2YXRpdmVz" data-listing-date-sort="1747195200000" data-listing-file-modified-sort="1747247101681" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1064">
-<div class="thumbnail"><a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/2025-05-14-compute-derivatives/simple_neuron.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">Breaking down Back Propagation</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVlcCUyMGxlYXJuaW5n'); return false;">deep learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVyaXZhdGl2ZXM='); return false;">derivatives</div>
-
+<section id="background" class="level1">
+<h1>Background</h1>
+<p>Gradient descent is the optimization technique used to optimize the parameters of a system. I say system because gradient descent is a general purpose technique that can be used to optimize the parameters that influence any output. The assumption here is that the computations are differentiable. Back propagation lies at the heart of gradient descent. It is used to calculate the gradients (derivatives) of the parameters. The mechanical steps performed to compute the gradients of the parameters is back propagation. In this article we will see simple examples of how back propagation computes the gradients.</p>
+<section id="simple-neuron" class="level3">
+<h3 class="anchored" data-anchor-id="simple-neuron">Simple Neuron</h3>
+<p>We will be looking at Simple Neural Networks. Neural networks take in one or multidimensional input to produce one or multidimensional output. To do that they are composed of a bunch of neurons that are parallel to each other forming a layer. Multiple layer can be chained together to create “deep” neural networks.</p>
+<div id="fig-neuron" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-neuron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="simple_neuron.png" class="img-fluid figure-img">
 </div>
-<div class="delink listing-description"><a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">
-Gradient descent is the optimization technique used to optimize the parameters of a system. I say system because gradient descent is a general purpose technique that can be…
-</a></div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-neuron-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Simple Neuron
+</figcaption>
+</figure>
 </div>
-<div class="metadata">
-<a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">
-<div class="listing-date">
-May 14, 2025
+</section>
+<section id="forward-pass" class="level3">
+<h3 class="anchored" data-anchor-id="forward-pass">Forward Pass</h3>
+<p><a href="#fig-neuron" class="quarto-xref">Figure&nbsp;1</a> illustrates a simple neuron. It takes in an input, performs some computation with its weight and produces an output. Application of a non-linear activation function is not explicitly shown but can be thought of as part of the computation. Non-linear activation functions play a crucial role in giving Neural Networks the flexibility to solve non-linear problems. I have omitted the bias term for simplicity which can be thought of as the offset that gets added on before the activation function. The input could be multidimensional in which case the weight would also be multidimensional. The weights multiply the inputs and the results get summed up (the sum would apply to multiple weight input pairs and the bias term). The summed value is passed through the non-linear activation function producing the final output.</p>
+</section>
+<section id="derivatives" class="level3">
+<h3 class="anchored" data-anchor-id="derivatives">Derivatives</h3>
+<p>We can clearly see that since we are using weight to multiply the input it affects the output. How much does the weight influence the output can be calculated by taking the derivate of the output with respect to the weight. Multidimensional derivatives are called gradients. This article uses derivatives and gradients interchangeably. If there are multiple weights (as is the case when the inputs are multidimensional), since each weight contributes (by multiplying) to the output, each weight will have a derivative with respect to the output. The derivative is the degree of influence the computation has in producing the output. When we want to influence the output in a certain direction we can use the derivative to adjust the weight.</p>
+</section>
+<section id="backward-pass" class="level3">
+<h3 class="anchored" data-anchor-id="backward-pass">Backward pass</h3>
+<p>At a high level inputs are fed into the network which produces output. We can think of the outputs as the predictions of the model. In supervised learning we know the desired output of the each input. We can compare the output of the model and desired outputs (labels) to create a error value. We use a <em>loss</em> function for that. If we aggregate all the errors we get a scalar value which quantifies the mistakes the model made in the predictions. The wights played a role in creating the outputs thus the error. We can propagate the information captured int the error back to the weights giving the weights an opportunity to update in the desired direction of the output. The derivatives of the weights provide the direction in which the weights are to be adjusted.</p>
+<div id="fig-chain-rule" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chain-rule-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="simple_fb_pass.png" class="img-fluid figure-img">
 </div>
-<div class="listing-author">
-ishan dahal
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chain-rule-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Chain rule
+</figcaption>
+</figure>
 </div>
-</a>
+<p>As there can be arbitrary number of neurons in a layer and arbitrary number of layers we need a systematic way to calculate the gridents of each weight. Back propagation is this systematic method that computes the gradients of the error with respect to each weight. In a deep neural network the output of previous layer are fed as input to the subsequent layer till the final error is computed. Since output of a computation is being fed as input into another computation which is a compositie function. Chain rule in calculus gives us a way to calculate the gradients for composite functions. The chain rule in calculus states that if you have a composite function, the derivative of the output with respect to an input variable is the product of the derivatives of the intermediate steps.</p>
+</section>
+<section id="chain-rule" class="level3">
+<h3 class="anchored" data-anchor-id="chain-rule">Chain rule</h3>
+<p><a href="#fig-chain-rule" class="quarto-xref">Figure&nbsp;2</a> illustrates forward and backward pass of a neural network that has only two neurons in two layers. In the forward pass the input (x) is influenced by w1 to produce x’. x’ in turn is influenced by w2 to produce output (o). Calculating the derivative of w2 with respect to o can be done in a single step. Derivative of w1 with respect to o needs to take into consideration the intermediate values computed along the way. The right thing to do here is to multiply the intermediate derivatives.</p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>That is pretty much all there is to back propogation. The opertation to compute individual derivatives can be straight forward. The complexity rises from having to calculate and keep track of intermediate derivatives. Imagine hundreds of these layers and their associated computations. Frameworks like pytorch make is incredibly simple by abstracting away the complexity. Manually computing the gradients layer by layer would surely be tedious not to mention error prone. In this example we only looked at scalar valued output. In practical terms inputs are vectors and layers of neurons then turn into matrices. Vectors stacked on top of eachother become matrices so the computation end up becoming matrix matrix operations. Frameworks like pytorch also take this into consideration making gradient computation a simple <code>.backward()</code> method call.</p>
+</section>
+<section id="postscript" class="level3">
+<h3 class="anchored" data-anchor-id="postscript">Postscript</h3>
+<p><a href="https://www.youtube.com/watch?v=VMj-3S1tku0">Andrej Karpathy</a> has a video on creating micrograd; it is a simple codebase that has a simple class that does a bunch of operations. Each operation also has an associated method that accumulates the derivative. I would highly recommend watching the video. Below are some snippets of code on my attempt at implementing the class. It only shows the add method for brevity. When two <code>Value</code>s are added the result output could further go on to participate in other computations. Instead of worrying about the global operation we only worry about the local derivative (which is 1 in our example of addition) multiplied with whatever the derivative of the output is with respect to the global output. As long as we systematically follow this starting from the end (back to front - crucial to propagate gradients correctly) we will have the correct derivaties.</p>
+<div id="76b9b1c2-23fc-42a9-894a-2f136c014c7f" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Value:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Class that implements basic autograd functionality similar to pytorch"""</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, data, child<span class="op">=</span>(), label<span class="op">=</span><span class="st">""</span>, op<span class="op">=</span><span class="st">""</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.data <span class="op">=</span> data</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._prev <span class="op">=</span> <span class="bu">set</span>(child)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.label <span class="op">=</span> label</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._op <span class="op">=</span> op</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.grad <span class="op">=</span> <span class="dv">0</span> <span class="co"># Initially gradient is zero</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._backward <span class="op">=</span> <span class="kw">lambda</span> : <span class="va">None</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other):</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(other, (<span class="bu">int</span>, <span class="bu">float</span>)): other <span class="op">=</span> Value(other)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> Value(<span class="va">self</span>.data <span class="op">+</span> other.data, child<span class="op">=</span>(<span class="va">self</span>, other), op<span class="op">=</span><span class="st">"+"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> backward():</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.grad <span class="op">+=</span> out.grad <span class="co"># We are omitting multiplying with local derivative which is * 1 in addition</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            other.grad <span class="op">+=</span> out.grad</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        out._backward <span class="op">=</span> backward</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="ZGVlcCUyMGxlYXJuaW5nJTJDY29kZSUyQ2F1dG8tcmVncmVzc2l2ZQ==" data-listing-date-sort="1715054400000" data-listing-file-modified-sort="1715211535977" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="493">
-<div class="thumbnail"><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
+<section id="resources" class="level4">
+<h4 class="anchored" data-anchor-id="resources">Resources:</h4>
+<ul>
+<li><a href="https://github.com/ishandahal/micrograd">My implementation of micrograd</a></li>
+<li><a href="https://github.com/karpathy/micrograd">Andrej’s micrograd repo</a></li>
+<li><a href="https://excalidraw.com/">Drawing made possible by Excalidraw</a></li>
+</ul>
 
-<img loading="lazy" src="./posts/2024-05-07-transformer-with-basic-torch/image.jpg" class="thumbnail-image">
 
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">Building decoder only transformer similar to chatGPT with basic torch</a>
-</h3>
-<div class="listing-categories">
+</section>
+</section>
+</section>
 
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVlcCUyMGxlYXJuaW5n'); return false;">deep learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YXV0by1yZWdyZXNzaXZl'); return false;">auto-regressive</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-I spent some time coding up chatGPT using torch modules other than self-attention modules. The outcome was an auto-regressive (consumes its own output to produce more…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-<div class="listing-date">
-May 7, 2024
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="bmV3cw==" data-listing-date-sort="1714795200000" data-listing-file-modified-sort="1715211637524" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="21">
-<div class="thumbnail"><a href="./posts/welcome/index.html" class="no-external">
-
-<p class="card-img-top"><img src="posts/welcome/thumbnail.jpg"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmV3cw=='); return false;">news</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/welcome/index.html" class="no-external">
-This is place for my learnings, experiments and ideas that I have come accross that my future self will appreciate.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-May 4, 2024
-</div>
-<div class="listing-author">
-Ishan Dahal
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

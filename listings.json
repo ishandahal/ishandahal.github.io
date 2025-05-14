@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/2025-05-14-compute-derivatives/gradient_descent.html",
       "/posts/2024-05-07-transformer-with-basic-torch/index.html",
       "/posts/welcome/index.html"
     ]
