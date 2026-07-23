@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ishandahal.github.io/about.html</loc>
-    <lastmod>2024-05-09T00:16:48.384Z</lastmod>
+    <loc>https://ishandahal.github.io/tils/2026-07-23-claude-and-crafting-interpreters.html</loc>
+    <lastmod>2026-07-23T12:18:58.856Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ishandahal.github.io/index.html</loc>
+    <lastmod>2024-05-08T23:56:54.943Z</lastmod>
   </url>
   <url>
     <loc>https://ishandahal.github.io/posts/2024-05-07-transformer-with-basic-torch/index.html</loc>
@@ -17,7 +21,11 @@
     <lastmod>2025-05-14T18:25:01.681Z</lastmod>
   </url>
   <url>
-    <loc>https://ishandahal.github.io/index.html</loc>
-    <lastmod>2024-05-08T23:56:54.943Z</lastmod>
+    <loc>https://ishandahal.github.io/til.html</loc>
+    <lastmod>2026-07-23T11:47:24.593Z</lastmod>
+  </url>
+  <url>
+    <loc>https://ishandahal.github.io/about.html</loc>
+    <lastmod>2024-05-09T00:16:48.384Z</lastmod>
   </url>
 </urlset>

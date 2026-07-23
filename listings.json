@@ -6,5 +6,11 @@
       "/posts/2024-05-07-transformer-with-basic-torch/index.html",
       "/posts/welcome/index.html"
     ]
+  },
+  {
+    "listing": "/til.html",
+    "items": [
+      "/tils/2026-07-23-claude-and-crafting-interpreters.html"
+    ]
   }
 ]
