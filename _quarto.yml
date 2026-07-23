@@ -7,6 +7,7 @@ website:
     right:
       - about.qmd
       - index.qmd
+      - til.qmd
       - icon: github
         href: https://github.com/ishandahal/
       # - icon: twitter

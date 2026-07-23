@@ -1,0 +1,11 @@
+---
+title: "claude and crafting interpreters by Robert Nystrom"
+date: "2026-07-23"
+categories: ["programming language"]
+---
+I have been using claude from the application to follow along the [Crafting Interpreters](https://www.craftinginterpreters.com/){target="_blank"} and it is been a lot of fun. I have include some instructions on `Claude.md` file with some general instructions on being a good teacher and enabling the teacher. The back and forth has been enjoyable. I am implementing part 1 in python (book has it in Java). I am in the early stages and it feels like the model is following its role.  
+
+I have written most of the code till now but have relied on Claude to do some plumbing work. I am using Sonnet 5 on high for any explanations and clarifications. I have also asked it to use Haiku if it feels it is up for the job. For creating simple commits I have seen it kick off haiku. I have to be explicit about this. It doesn't automatically do it and (don't think) it just picks up based on old context where it spun off haiku and reasons automatically. Though I could be wrong. At somepoint I might include it in the `Claude.md` file. 
+
+Overall I am enjoying the process of learning about interpreters and leveraging Claude.  
+
