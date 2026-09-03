@@ -2,8 +2,8 @@
 title: "Making sense of the Scanner from crafting interpreters"
 author: "ishan dahal"
 date: "2026-07-25"
-categories: []
-image: ""
+categories: [interpreter, programming language]
+image: "scanner.png"
 ---
 
 I am going through the [Crafting Interpreters](https://www.craftinginterpreters.com/scanning.html){target="_blank"} book by Robert Nystrom. I am still in the initial stages. I have completed implementing the scanner (lexer). The book implements it in Java; I am doing it in Python. Going through the chapter and mechanically converting the Java code to Python made sense. I was using Claude Code to give me feedback on the implementation. It picked up some subtle erros that I had overlooked. 
