@@ -1,0 +1,61 @@
+---
+title: "Making sense of the Scanner from crafting interpreters"
+author: "ishan dahal"
+date: "2026-07-25"
+categories: []
+image: ""
+---
+
+I am going through the [Crafting Interpreters](https://www.craftinginterpreters.com/scanning.html){target="_blank"} book by Robert Nystrom. I am still in the initial stages. I have completed implementing the scanner (lexer). The book implements it in Java; I am doing it in Python. Going through the chapter and mechanically converting the Java code to Python made sense. I was using Claude Code to give me feedback on the implementation. It picked up some subtle erros that I had overlooked. 
+
+To be honest the whole process felt pretty mechanical (sort of like migrating from one framework to another). I am writing this post to force myself to go back and internalize what I have just implemented. Hence, I am going to try and walkthrough what the happens when a file is passed to the interpreter (or a chunk of text is passed via the REPL). 
+
+
+```python
+def run(source: str):
+    """Scan source code and print resulting tokens."""
+    scanner = Scanner(source)
+    tokens = scanner.scan_tokens()
+
+    for token in tokens:
+        print(token)
+```
+
+Whether the Lox code is passed one line at a time from the REPL or a text file is passed, the `run` function is the destination. REPL executes in an infinite loop consuming and sending text chunk to the run function. Instead if a file is passed the run command receives the entire content of the file. `run` instantiates the `Scanner` and calls its `scan_tokens` method which returns a sequence of tokens. Each token is then printed.
+
+At a high level lexeme is a smallest chunck of characters that are sensible to the programming language (Lox in our case). From lexeme we get tokens. Token is lexeme and then some. In this implementation Token consists of type, the lexeme itself, literal value (if it has one) and the line where the lexeme resides. The token's type is specified by the lanugage. Eg: "=" is of token type "EQUAL"
+
+`scan_tokens` contains a while loop that stops once it reaches the end (of file or line depending on whether file is passed or line from REPL). In each iteration of the loop we keep track of the where we are in the file (or line). This is done through two pointer setup where one pointer gets updated to where the previous iteration ended and line number that increments after each newline character `\n`. One other thing that happens on each iteration is `_scan_token`method gets called. 
+
+`scan_token` is the workhorse of the `Scanner` class. It grabs the current character and within its giant `match` expression contains logic to convert one or more characters that form a lexeme to a token. Few examples to illustrate how tokens are constructed:
+
+```python
+# Single character lexeme
+case "*":
+		self._add_token(TokenType.STAR)
+# Double character lexeme
+case "!":
+    self._add_token(
+		# Checking if the subsequent character fits the criteria to be of this type
+        TokenType.BANG_EQUAL if self._match("=") else TokenType.BANG
+    )
+```
+
+`_add_token` grabs the character chunk and the line it came from (along with what are passed as arguments - token type and literal) and returns a well formed token. The token is appended to the sequence of token that is to be returned by `scan_tokens` method. 
+```python
+def _add_token(self, ttype: TokenType, literal: object = None) -> None:
+    """Create a token and add it to the tokens list."""
+    text = self.source[self._start : self._current]
+    self.tokens.append(
+        Token(type=ttype, lexeme=text, literal=literal, line=self._line)
+    )
+```
+
+This way a sequence of token is created one token at a time. Once the line or file is looped - while loop exits - over one character at a time an EOF token is appended. This in a nutshell is what is going on in the `Scanner`. There are a handfull of helper functions to help the way. Lox language has the concept of number and string. These require a bit more involved logic then simply looking at one or two characters. To facilitate that we use some helper methods.  
+
+That pretty much is it. As I am sure you see there is not a lot going on but this helped me walkthrough the code and have a mental model of the `Scanner` class. 
+
+
+
+
+
