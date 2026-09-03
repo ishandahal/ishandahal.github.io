@@ -1,0 +1,73 @@
+---
+title: "Implementing Parser from crafting interpreters"
+author: "ishan dahal"
+date: "2026-09-02"
+categories: [programming language, interpreter]
+image: "parser.png"
+---
+
+In this post I am going to do a shallow walkthrough of the Parser class which implements the parsing logic for the interpreter. Parser consumes the list of tokens created by the `Scanner` class and produces a syntax tree or Abstract Syntax Tree based on the grammar of the language. 
+
+In this section we are only going to talk about expressions (not statements). Simple way to think of `expression` is that it evaluates to a value. `statements` do things like print a string. The rules of the grammar dictate valid expressions. Our Parser generates error messages for illformed expressions. 
+
+Here is an example of a simple grammar that can be used to create expressions. 
+
+```
+expression     → literal | unary | binary | grouping ;
+literal        → NUMBER | STRING | "true" | "false" | "nil" ;
+grouping       → "(" expression ")" ;
+unary          → ( "-" | "!" ) expression ;
+binary         → expression operator expression ;
+operator       → "==" | "!=" | "<" | "<=" | ">" | ">=" | "+"  | "-"  | "*" | "/" ;
+```
+
+Though simple to create expressions the issue we run into is ambiguity. We can use the same grammar to produce both `(6 / 3) - 1` or `6 / (3 - 1)`. This is not good for our parser because based on the rules it can't identify which one is the correct one. We fix this by using operator precedence and associativity which makes the grammar complex but removes the ambiguity issue. 
+
+Here is the new grammar:
+```
+expression     → equality ;
+equality       → comparison ( ( "!=" | "==" ) comparison )* ;
+comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+term           → factor ( ( "-" | "+" ) factor )* ;
+factor         → unary ( ( "/" | "*" ) unary )* ;
+unary          → ( "!" | "-" ) unary
+               | primary ;
+primary        → NUMBER | STRING | "true" | "false" | "nil"
+               | "(" expression ")" ;
+```
+
+The operator precedence increases as we go down the list. So unary has higher precedence than comparison. This also makes intuitive sense. In `-1 == 2` we expect `-1` to take higher precedence than `==`. The grammar rules are implemented as functions where some are recursive in themselves (like `unary`) or through other functions (like `expression` which can fall through to `primary`). The grammar rules with `*` are the binary operators and encode associativity. 
+
+Here we take a look at one of the rules which is implemented as a function. Recursive Descent parsing is the technique used to chain the function calls and implement the parser. 
+```python
+def _comparison(self) -> Expr:
+		"""Parse comparison operators (<, <=, >, >=) left-associatively."""
+		expr: Expr = self._term()
+		expr = self._binary_helper(
+				expr,
+				self._term,
+				TokenType.LESS,
+				TokenType.LESS_EQUAL,
+				TokenType.GREATER,
+				TokenType.GREATER_EQUAL,
+		)
+		return expr 
+
+def _binary_helper(
+		self, expr: Expr, parse_operand: Callable[[], Expr], *types: TokenType
+) -> Expr:
+		"""Parse a left-associative chain of binary operators using parse_operand for each operand."""
+		while self._match(*types):
+				operator: Token = self._previous()
+				right: Expr = parse_operand()
+				expr = Binary(expr, operator, right)
+		return expr
+```
+
+As specified by the rule, first thing to do is evaluate the higher precedence token sequence (if any) which is done in `self._term()` function call. After that we make use of the `_binary_helper` method to create a binary expression accounting for associativity in the case of sequence of operators. We do this with the `while` loop. 
+
+The token streams are consumed by the functions and appropriate nodes in the syntax tree are created. 
+
+But ofcourse we have to talk about what happens when something goes wrong in the event that the token sequence are illformed. In that case we have error reporting functions that provide high level clue on where in the file the potential error exists and possibly clues on which token. 
+
+And pretty much covers at a high level the operations of the `Parser` class. Main objectives are to consume the token stream and create a Abstract Syntax Tree and provide decent error reporting to help the user correct the code. 
