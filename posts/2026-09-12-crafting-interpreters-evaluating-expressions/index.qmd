@@ -1,0 +1,95 @@
+---
+title: "Evaluating LOX expressions"
+author: "ishan dahal"
+date: "2026-09-12"
+categories: [programming language, interpreter]
+image: "parser.png"
+---
+
+Evaluating lox expressions we execute the syntax. Different interpreters do this step differently eg: convert to machine code, bytecode etc. What we will be doing is execute the python code in which our interpreter is written in to produce values. Python provides garbabe collection and is dynamically typed similar to how Lox is designed. Python also provides `isinstance` builtin function we can use to selectively execute the operations based on the operands, eg: concatanating two strings when + operator is used between two operands. 
+
+We will use the following mapping between python and Lox. 
+
+```
+Lox							Python
+Any Lox value				object
+nil 						None
+Boolean						bool
+number						float
+string						str
+```
+
+Python is not a statically typed language. As such the mapping will not be enforced by the language but we will use the `typing` functionality to encode our mapping. 
+
+In the book a design pattern - Visitor - is used to implement the logic of each types executing the operator. In Python we have `match` statement which allows us to implement the functionality of selectively executing block of code based on the type in a direct manner. We will be using that to implement the operations. This becomes a pretty significant `evaluate` method but is fairly readable and all the code lives in one function. 
+
+Evaluating literals is pretty straight forward. We simply pull out the value since it was already eagerly created in the `parser` when creating the nodes of the syntax tree.
+
+Evaluating grouping requires evaluating inside the parenthesis. For this we return a recursive call to the sub-expression inside the parenthesis. 
+```
+case Grouping(expr):
+		return self.evaluate(expr)
+
+```
+
+Evaluating unary operator we evaluate the expression first (similar to grouping) and then apply the unary operator. For `minus` we make sure that the expression evaluates the `number` type and for `!` we ensure the expression evaluates to a `boolean` type. In discussing boolean the concept of what evaluate to `true` and `false` needs to be clarified. Different languages have different ideas on what evaluates to `true` and `false`. In Lox we will only consider `false` and `nil` as fasly - meaning evaluates to false - and everything else will evaluate to true.
+
+Evaluating binary operators multiply, divide and minus operators are straight forward. We evaluate the left and right operands; make sure they are of type `number` and return the value of resulting expression. For plus operator we will be supporting concatenation of string as well. This requires selectively checking both operands and then applying the appropriate operation. Since Python behaves the same way it is straight forward to implement it. 
+
+```
+case TokenType.PLUS:
+		if isinstance(left_value, str) and isinstance(right_value, str):
+				return left_value + right_value
+		if isinstance(left_value, float) and isinstance(
+				right_value, float
+		):
+				return left_value + right_value
+```
+
+Evaluating comparison operators <, <=, > and >= we check that the operands are of type `number` and evaluate the expression. For = and != we do not support any implicit conversions. Consequently `3` and `"3"` do not evaluate as equal. We implement this by ensuring that both operands are of the same types before checking the equality. If the type check fails the equality check immediately fails.
+
+
+Runtime Error:
+Errors in parsing and scanning are caught by the `Scanner` and `Parser` class. There is another class of errors we need to consider which are runtime errors. There are errors that are not caught by the scanner and parser. For example it does not make sense to divide one string with another `"undefined" / 3;`. If we did not provide Lox specific error handling for operations like this the user would see error trace from Python which is not user friendly. We would like to provide Lox specific error handling. When the user is executing expressions using REPL we also would like to allow the user to continue in the REPL without exiting if one of the executions turns out to contain error. 
+
+We do this by creating Lox specific error handling class `LoxRuntimeError` which inherits from python builtin `RuntimeError` exception.
+```
+@staticmethod
+def _require_number(operator: Token, value: object) -> float:
+		"""Confirm that value is a float and return it."""
+		if type(value) is float:
+				return value
+		raise LoxRuntimeError(operator, "Operand must be a number.")
+```
+Should a runtime error be detected we use the `try/except` Python functionality to gracefully inform the user that a runtime error has occurred. 
+```
+def interpret(self, expression: Expr) -> None:
+		"""Evaluate the expression and print the value."""
+		try:
+				value: object = self.evaluate(expression)
+				print(self._stringify(value))
+		except LoxRuntimeError as error:
+				ErrorReporter.runtime_error(error)
+```
+The `runtime_error` function consumes the exception and prints a user friendly message specific to the error token.  
+
+The `interpret` method evaluates the expression and prints the result to standard output. The `_stringify` method contains string formatting logic specific Lox that differes from Python. 
+```
+def _stringify(self, obj: object) -> str:
+		"""Convert a Lox value to its display representation."""
+		if obj is None:
+				return "nil"
+		if isinstance(obj, float):
+				text = str(obj)
+				if text.endswith(".0"):
+						return text[:-2]
+		if isinstance(obj, bool):
+				# Lox booleans are lowercase.
+				text = str(obj)
+				return text.lower()
+		return str(obj)
+```
+
+That is all there is to it. 
+
+
