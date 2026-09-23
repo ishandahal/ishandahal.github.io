@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="ishan dahal">
+<meta name="dcterms.date" content="2026-09-12">
 
-<title>Collection – ishan dahal</title>
+<title>Evaluating LOX expressions – ishan dahal</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,25 +28,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-158031087360bce0ff56dc785ce39e06.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -72,77 +72,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">ishan dahal</span>
     </a>
   </div>
@@ -153,15 +95,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Collection</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./til.html"> 
+    <a class="nav-link" href="../../til.html"> 
 <span class="menu-text">TIL</span></a>
   </li>  
   <li class="nav-item compact">
@@ -179,236 +121,108 @@ window.Quarto = {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Collection</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">Evaluating LOX expressions</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">programming language</div>
+                <div class="quarto-category">interpreter</div>
+              </div>
+                  </div>
   </div>
     
   
-  <div class="quarto-title-meta column-page-left">
+  <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>ishan dahal </p>
+            </div>
+    </div>
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 12, 2026</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(6)</span></div><div class="category" data-category="YXV0by1yZWdyZXNzaXZl">auto-regressive <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29kZQ==">code <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZGVlcCUyMGxlYXJuaW5n">deep learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZGVyaXZhdGl2ZXM=">derivatives <span class="quarto-category-count">(1)</span></div><div class="category" data-category="aW50ZXJwcmV0ZXI=">interpreter <span class="quarto-category-count">(3)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvZ3JhbW1pbmclMjBsYW5ndWFnZQ==">programming language <span class="quarto-category-count">(3)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
+<p>Evaluating lox expressions we execute the syntax. Different interpreters do this step differently eg: convert to machine code, bytecode etc. What we will be doing is execute the python code in which our interpreter is written in to produce values. Python provides garbabe collection and is dynamically typed similar to how Lox is designed. Python also provides <code>isinstance</code> builtin function we can use to selectively execute the operations based on the operands, eg: concatanating two strings when + operator is used between two operands.</p>
+<p>We will use the following mapping between python and Lox.</p>
+<pre><code>Lox                         Python
+Any Lox value               object
+nil                         None
+Boolean                     bool
+number                      float
+string                      str</code></pre>
+<p>Python is not a statically typed language. As such the mapping will not be enforced by the language but we will use the <code>typing</code> functionality to encode our mapping.</p>
+<p>In the book a design pattern - Visitor - is used to implement the logic of each types executing the operator. In Python we have <code>match</code> statement which allows us to implement the functionality of selectively executing block of code based on the type in a direct manner. We will be using that to implement the operations. This becomes a pretty significant <code>evaluate</code> method but is fairly readable and all the code lives in one function.</p>
+<p>Evaluating literals is pretty straight forward. We simply pull out the value since it was already eagerly created in the <code>parser</code> when creating the nodes of the syntax tree.</p>
+<p>Evaluating grouping requires evaluating inside the parenthesis. For this we return a recursive call to the sub-expression inside the parenthesis.</p>
+<pre><code>case Grouping(expr):
+        return self.evaluate(expr)
+</code></pre>
+<p>Evaluating unary operator we evaluate the expression first (similar to grouping) and then apply the unary operator. For <code>minus</code> we make sure that the expression evaluates the <code>number</code> type and for <code>!</code> we ensure the expression evaluates to a <code>boolean</code> type. In discussing boolean the concept of what evaluate to <code>true</code> and <code>false</code> needs to be clarified. Different languages have different ideas on what evaluates to <code>true</code> and <code>false</code>. In Lox we will only consider <code>false</code> and <code>nil</code> as fasly - meaning evaluates to false - and everything else will evaluate to true.</p>
+<p>Evaluating binary operators multiply, divide and minus operators are straight forward. We evaluate the left and right operands; make sure they are of type <code>number</code> and return the value of resulting expression. For plus operator we will be supporting concatenation of string as well. This requires selectively checking both operands and then applying the appropriate operation. Since Python behaves the same way it is straight forward to implement it.</p>
+<pre><code>case TokenType.PLUS:
+        if isinstance(left_value, str) and isinstance(right_value, str):
+                return left_value + right_value
+        if isinstance(left_value, float) and isinstance(
+                right_value, float
+        ):
+                return left_value + right_value</code></pre>
+<p>Evaluating comparison operators &lt;, &lt;=, &gt; and &gt;= we check that the operands are of type <code>number</code> and evaluate the expression. For = and != we do not support any implicit conversions. Consequently <code>3</code> and <code>"3"</code> do not evaluate as equal. We implement this by ensuring that both operands are of the same types before checking the equality. If the type check fails the equality check immediately fails.</p>
+<p>Runtime Error: Errors in parsing and scanning are caught by the <code>Scanner</code> and <code>Parser</code> class. There is another class of errors we need to consider which are runtime errors. There are errors that are not caught by the scanner and parser. For example it does not make sense to divide one string with another <code>"undefined" / 3;</code>. If we did not provide Lox specific error handling for operations like this the user would see error trace from Python which is not user friendly. We would like to provide Lox specific error handling. When the user is executing expressions using REPL we also would like to allow the user to continue in the REPL without exiting if one of the executions turns out to contain error.</p>
+<p>We do this by creating Lox specific error handling class <code>LoxRuntimeError</code> which inherits from python builtin <code>RuntimeError</code> exception.</p>
+<pre><code>@staticmethod
+def _require_number(operator: Token, value: object) -&gt; float:
+        """Confirm that value is a float and return it."""
+        if type(value) is float:
+                return value
+        raise LoxRuntimeError(operator, "Operand must be a number.")</code></pre>
+<p>Should a runtime error be detected we use the <code>try/except</code> Python functionality to gracefully inform the user that a runtime error has occurred.</p>
+<pre><code>def interpret(self, expression: Expr) -&gt; None:
+        """Evaluate the expression and print the value."""
+        try:
+                value: object = self.evaluate(expression)
+                print(self._stringify(value))
+        except LoxRuntimeError as error:
+                ErrorReporter.runtime_error(error)</code></pre>
+<p>The <code>runtime_error</code> function consumes the exception and prints a user friendly message specific to the error token.</p>
+<p>The <code>interpret</code> method evaluates the expression and prints the result to standard output. The <code>_stringify</code> method contains string formatting logic specific Lox that differes from Python.</p>
+<pre><code>def _stringify(self, obj: object) -&gt; str:
+        """Convert a Lox value to its display representation."""
+        if obj is None:
+                return "nil"
+        if isinstance(obj, float):
+                text = str(obj)
+                if text.endswith(".0"):
+                        return text[:-2]
+        if isinstance(obj, bool):
+                # Lox booleans are lowercase.
+                text = str(obj)
+                return text.lower()
+        return str(obj)</code></pre>
+<p>That is all there is to it.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="cHJvZ3JhbW1pbmclMjBsYW5ndWFnZSUyQ2ludGVycHJldGVy" data-listing-date-sort="1789185600000" data-listing-file-modified-sort="1789226500581" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="786">
-<div class="thumbnail"><a href="./posts/2026-09-12-crafting-interpreters-evaluating-expressions/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/2026-09-12-crafting-interpreters-evaluating-expressions/parser.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2026-09-12-crafting-interpreters-evaluating-expressions/index.html" class="no-external">Evaluating LOX expressions</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvZ3JhbW1pbmclMjBsYW5ndWFnZQ=='); return false;">programming language</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('aW50ZXJwcmV0ZXI='); return false;">interpreter</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/2026-09-12-crafting-interpreters-evaluating-expressions/index.html" class="no-external">
-Evaluating lox expressions we execute the syntax. Different interpreters do this step differently eg: convert to machine code, bytecode etc. What we will be doing is execute…<code></code>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/2026-09-12-crafting-interpreters-evaluating-expressions/index.html" class="no-external">
-<div class="listing-date">
-Sep 12, 2026
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="cHJvZ3JhbW1pbmclMjBsYW5ndWFnZSUyQ2ludGVycHJldGVy" data-listing-date-sort="1788321600000" data-listing-file-modified-sort="1788449546447" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="763">
-<div class="thumbnail"><a href="./posts/2026-09-02-crafting-interpreters-parser/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/2026-09-02-crafting-interpreters-parser/parser.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2026-09-02-crafting-interpreters-parser/index.html" class="no-external">Implementing Parser from crafting interpreters</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvZ3JhbW1pbmclMjBsYW5ndWFnZQ=='); return false;">programming language</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('aW50ZXJwcmV0ZXI='); return false;">interpreter</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/2026-09-02-crafting-interpreters-parser/index.html" class="no-external">
-In this post I am going to do a shallow walkthrough of the Parser class which implements the parsing logic for the interpreter. Parser consumes the list of tokens created by…<code></code>
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/2026-09-02-crafting-interpreters-parser/index.html" class="no-external">
-<div class="listing-date">
-Sep 2, 2026
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="aW50ZXJwcmV0ZXIlMkNwcm9ncmFtbWluZyUyMGxhbmd1YWdl" data-listing-date-sort="1784952000000" data-listing-file-modified-sort="1788449502731" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="709">
-<div class="thumbnail"><a href="./posts/2026-07-25-crafting-interpreters-scanner/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/2026-07-25-crafting-interpreters-scanner/scanner.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2026-07-25-crafting-interpreters-scanner/index.html" class="no-external">Making sense of the Scanner from crafting interpreters</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('aW50ZXJwcmV0ZXI='); return false;">interpreter</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvZ3JhbW1pbmclMjBsYW5ndWFnZQ=='); return false;">programming language</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/2026-07-25-crafting-interpreters-scanner/index.html" class="no-external">
-I am going through the Crafting Interpreters book by Robert Nystrom. I am still in the initial stages. I have completed implementing the scanner (lexer). The book implements…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/2026-07-25-crafting-interpreters-scanner/index.html" class="no-external">
-<div class="listing-date">
-Jul 25, 2026
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="ZGVlcCUyMGxlYXJuaW5nJTJDY29kZSUyQ2Rlcml2YXRpdmVz" data-listing-date-sort="1747195200000" data-listing-file-modified-sort="1747247101681" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1064">
-<div class="thumbnail"><a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/2025-05-14-compute-derivatives/simple_neuron.png"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">Breaking down Back Propagation</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVlcCUyMGxlYXJuaW5n'); return false;">deep learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVyaXZhdGl2ZXM='); return false;">derivatives</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">
-Gradient descent is the optimization technique used to optimize the parameters of a system. I say system because gradient descent is a general purpose technique that can be…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/2025-05-14-compute-derivatives/gradient_descent.html" class="no-external">
-<div class="listing-date">
-May 14, 2025
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="ZGVlcCUyMGxlYXJuaW5nJTJDY29kZSUyQ2F1dG8tcmVncmVzc2l2ZQ==" data-listing-date-sort="1715054400000" data-listing-file-modified-sort="1715211535977" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="493">
-<div class="thumbnail"><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-
-<img loading="lazy" src="./posts/2024-05-07-transformer-with-basic-torch/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">Building decoder only transformer similar to chatGPT with basic torch</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('ZGVlcCUyMGxlYXJuaW5n'); return false;">deep learning</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('Y29kZQ=='); return false;">code</div>
-
-<div class="listing-category" onclick="window.quartoListingCategory('YXV0by1yZWdyZXNzaXZl'); return false;">auto-regressive</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-I spent some time coding up chatGPT using torch modules other than self-attention modules. The outcome was an auto-regressive (consumes its own output to produce more…
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/2024-05-07-transformer-with-basic-torch/index.html" class="no-external">
-<div class="listing-date">
-May 7, 2024
-</div>
-<div class="listing-author">
-ishan dahal
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="bmV3cw==" data-listing-date-sort="1714795200000" data-listing-file-modified-sort="1715211637524" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="21">
-<div class="thumbnail"><a href="./posts/welcome/index.html" class="no-external">
-
-<p class="card-img-top"><img loading='lazy' src="posts/welcome/thumbnail.jpg"  class="thumbnail-image card-img"/></p>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/welcome/index.html" class="no-external">Welcome</a>
-</h3>
-<div class="listing-categories">
-
-<div class="listing-category" onclick="window.quartoListingCategory('bmV3cw=='); return false;">news</div>
-
-</div>
-<div class="delink listing-description"><a href="./posts/welcome/index.html" class="no-external">
-This is place for my learnings, experiments and ideas that I have come accross that my future self will appreciate.
-</a></div>
-</div>
-<div class="metadata">
-<a href="./posts/welcome/index.html" class="no-external">
-<div class="listing-date">
-May 4, 2024
-</div>
-<div class="listing-author">
-Ishan Dahal
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
