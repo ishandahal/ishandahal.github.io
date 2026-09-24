@@ -1,0 +1,74 @@
+---
+title: "State and Statements"
+author: "ishan dahal"
+date: "2026-09-23"
+categories: [programming language, interpreter]
+image: "statement.png"
+---
+
+Next chapter is about adding state and statements. The implementation so far has expressions which evaluate to a value. Statements allow us to do more like print outputs, update state etc. In order to take advantage of updating state via statements we also add the idea of a state. This allows the ability to create variables that refer to certain expressions which can later be recalled. 
+
+Example of state:
+```
+var foo = 23;
+print foo; // this should print 23
+```
+
+To start we add two types of statements which are print statement - allows us the ability to output stuff in the terminal - and expression statement - allows us the ability to execute expressions that have side effect like function calls that have side effect. Implementing functions is done in future chapter. 
+
+In order to accomodate statements we update the grammar of Lox. 
+
+```
+program        → statement* EOF ;
+
+statement      → exprStmt
+               | printStmt ;
+
+exprStmt       → expression ";" ;
+printStmt      → "print" expression ";" ;
+```
+
+Where previously we only had expression, the updated grammar has `program` at the highest level which consists of one or more `statements`. `statement` consist of the two types of statements we talked about earlier. `exprStmt` is any valid expression that ends with `;`. `2 + 2;` is a valid statement though not very useful as we are not doing anything with the computation. `printStmt` allows us to output values in the standard output. Based on the grammar `printStmt` takes in any `expression` evaluates it and prints the value.  
+
+`parser` contains implementation to process the statements. parser now returns a list of statements in line with the updated grammar. By default everything is an expression statement. If a statement starts with `print` key word then the expression after the print statement is evaluated.
+
+With this we have the ability to fire the REPL and start doing `print 2;` and expect it to work.
+
+Next is declaring and accessing variables. The syntax used to declare variable is `var foo = 23;` - variable declaration statement. Since we don't want statements like `if (some_boolean_logic) var foo = 23;` which adds unnecessary complexity we separate variable declaration statement from rest of the statements. Since any statement can be placed where variable declaration statements (not vice versa) we make the following udpate to the grammar. If a statement is not a variable declaration then it falls through to rest of the statements.  
+
+```
+program        → declaration* EOF ;
+
+declaration    → varDecl
+               | statement ;
+
+statement      → exprStmt
+               | printStmt ;
+```
+
+When parser sees the `var` key word then it creates a `Var` node with the associated name and initializer value. If the initializer value is not passed the initializer value defaults to python `None`. In order to identify a previously declared variable we add some logic to our parser class. 
+
+```
+// If an identifier is found a Variable node is created with its associated field
+if self._match(TokenType.IDENTIFIER):
+		return Variable(self._previous())
+```
+
+With these updates we have added the ability to create and referrence variables. 
+
+
+Next stop is creating the `Environment` where the variable mappings are saved. I am not going to go into the details of the choices and would highly recommend reading the book. Two choices made: redefining variables are ok at the global level. Referring to variables that do not exist is not a compile time but a runtime error. The data structure used for the implementation is a python dictionary. We instantiate an `Environment` class for each session of the interpreter. The class contains the dictionary and methods to update and access the dictionary. Variable declaration syntax translates to adding a mapping and variable referrence translates to looking up the value of the variable. 
+
+Lox supports variable assignment. Variable assignment is an expression so evaluates to a value. To accomodate this we update the grammar especially the expression.
+
+```
+expression     → assignment ;
+assignment     → IDENTIFIER "=" assignment
+               | equality ;
+```
+
+Assignment operation itself is a bit more complex. This is because the not only must the right side be evaluated for the value the left must be as well. And the left side can also be a complex type instead of a variable (especially in the future when we support class). The solution in a nutshell is to evaluate the left side of the `=` and check to see if it of the right type (Variable) and if so move forward with the assignment operation. A new `Assign` node is created that contains the name of the variable and value.  Key difference between assignment and variable decleration is that assignment doesn't create a new variable if it doesn't already exist and throws runtime error. With this have global variables. 
+
+Scoping is the idea that certain objects exist and are available in certain parts of the code and not others. Being a close cousion of C Lox supports block scope with curly braces `{}`. The way we implement the scoping idea is by creating a new `Environment` for the scope which will have its nested parents to refer to (should it have them). This way when a variable is referenced it is not only checked in the current `environment` (dictionary of mappings) but also the chain of parent `environment`. This way we can refer to a variable that existed in a broader scope but also have a ability to overwrite it within the "local" scope.
+
+Lot of details have been brushed over as this is just a quick brain dump of the chapter. If you are really interested I would highly recommend reading the book. 
