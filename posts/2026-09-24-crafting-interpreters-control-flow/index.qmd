@@ -1,0 +1,17 @@
+---
+title: "Control Flow"
+author: "ishan dahal"
+date: "2026-09-24"
+categories: [programming language, interpreter]
+image: "fork.png"
+---
+
+The pattern for implementing incremental functionality is starting to follow the same pattern. First part of `Scanner` scanning the source code and creating tokens was completed a while back. The pattern now is: update the `Parser` to parse the tokens and produce appropriate abstract syntax tree (AST) - nodes are statements and expressions - which then gets passed to the interpreter which finally processes them. 
+
+Implementing control flow is no different. Two types of control flow we add are the `if` statement and logical `and` / `or`. Lox syntax for if statement is `if (condition) {statement} else {statement}`. I won't go into the details of the parsing but talking about the design choices is probably worth doing. We choose to allow dangling `if` which means an if statement without an else is allowed. Another bit of the design choice author mentions is the case of ambigious else statement. Example from the book:
+`if (first) if (second) whenTrue(); else whenFalse();`. It is not obvious from the syntax which `if` statement does the `else` statement belong to. The solution we go with (and seems to be what most others converge to) is to associate the `else` statement with the closest `if`. In this example the `else` becomes part of the second `if`. Additionally we do not evaluate the branch that is not `falsy`. To clarify: if the `condition` evaluated is `true` then the `else` statement even if present is not evaluated and vice-versa if it is `false`. 
+
+
+Next is logical `and` / `or`. Similar to only evaluating one branch of the `if/else` the logical operators short-circuit. This means for the case of `and` if the first operand evaluates to `false` we do not evaluate the second operand. Similarly if the first operand for `or` operator is `true` we do not evaluate the second operand. The logical operators are expressions and as such return values. The values they return is of the operand that gets evaluated last based on short-circuiting. We have already implemented the idea of truthy and falsy expressions so that comes in handy. Examples from book: `"hi" or 2` returns "hi" and `nil or "hi"` return "hi".
+
+Rest we implement `while` and `for` loop. Syntax for `while` loop is `while (condition) statement`. Identical to how C does it. We parse the tokens for the loop based on the syntax, create node for the syntax tree and execute it in the interpreter. `for` loop is also identical to how C does it. To implement it we do not create anything new, we use the existing nodes previously created and `while` loop. The details of it get quite long and elaborate specially for checking the termination condition / incrementing, so I recommend reading the book. To give a taste we have thhe option to completely omit variable initialization, use variable declaration or initialize variable with an expression. We incrementally add these abilities. The syntax is `for (var i = 0; i < 10; i = i + 1) print i` (used from the book).
