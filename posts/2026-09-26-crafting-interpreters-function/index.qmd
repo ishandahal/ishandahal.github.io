@@ -1,0 +1,95 @@
+---
+title: "Function call"
+author: "ishan dahal"
+date: "2026-09-26"
+categories: [programming language, interpreter]
+image: "functions.png"
+---
+
+Upto this point we have implemented quite a bit of building blocks. In implementing the ability to make function calls we bring lot of those blocks together. This was a long chapter and has a lot of content. To do justice to the topic I highly recommend reading the book. In this write up I am going to focus not so much on the implementation but on the salient ideas that stand out to me during the implementation.
+
+Syntax for a function is `add(2, 3)`. The starting keyword - the callee / the function being called - in our Lox programming language `add` is an expression that gets evaluated. As such it could be an expression that evaluates to a function and is not part of the function call syntax. The elements within the parenthesis are arguments each of which are also expressions. 
+
+Function Currying refers to returning returning partial function which itself take additional parameters. It is easier to illustrate with an example. `fn(1)(2)(3);` here `fn` is a function that takes one argument and returns another function that takes one argument which also returns a function that takes one argument which finally completes the chain of calls and execution ends. This style of chaining series of function calls is `Currying`. Programming langauge `Haskell` has this concept baked into the language. We have that support in Lox. 
+
+
+```
+def _call(self) -> Expr:
+		"""Parse a function call."""
+		expr: Expr = self._primary()
+
+		while True:
+				if self._match(TokenType.LEFT_PAREN):
+						expr = self._finish_call(expr)
+				else:
+						break
+		return expr
+
+def _finish_call(self, callee: Expr) -> Expr:
+		arguments: List[Expr] = []
+		if not self._check(TokenType.RIGHT_PAREN):
+				arguments.append(self._expression())
+				while self._match(TokenType.COMMA):
+						if len(arguments) >= MAX_ARGUMENTS:
+								ErrorReporter.error_at_token(
+										self._peek(),
+										f"Can't have more than {MAX_ARGUMENTS} arguments.",
+								)
+						arguments.append(self._expression())
+		paren: Token = self._consume(
+				TokenType.RIGHT_PAREN, "Expect ')' after arguments."
+		)
+		return Call(callee=callee, paren=paren, arguments=arguments)
+```
+
+In the preceeding lines of code we have the logic of how `Currying` is implemented. `Call` is the AST node for the function call.
+
+Capping the maximum number of arguments to be allowed in a funciton call. I never thought about this when using a language. In the Lox language we are restricting it to 255 arguments. Above that and we report an error; we do not terminate the program however. So, nothing stops a user from passing more arguments but the warning will be displayed.
+
+What to do when a function is called with too many arguments? Looks like differnt languages handle this differently. JavaScript allows it and discards the excess parameters and fills in `undefined` value for missing arguments. Since Lox is a dynamic typed language we don't have static type checking so we follow python (dynamic language) and raise an `Error` when there is a mismatch in the number of parameters expected and received in a function call. Technical term for this is the "arity" of a function - expected number of arguments.
+
+Native functions are functions that have operations implemented in the underlying language - in our case Python. These are part of the language and are made availabe to the user as convenient way to do useful things. For our case we implement a `clock` function which return number of seconds elapsed since a specific time. Native functions allow the user to do simple things without jumping through hoops for things like reading files etc.
+
+Local function and Closure.
+
+Lox supports local functions. Local functions are functions declared and used inside another function. Below is an illustration from the book: 
+
+```
+fun makeCounter() {
+  var i = 0;
+  fun count() {
+    i = i + 1;
+    print i;
+  }
+
+  return count;
+}
+
+var counter = makeCounter();
+counter(); // "1".
+counter(); // "2".
+```
+Here `makeCounter` returns a reference to the `count` local function. In order for this above example to work correctly the state of the local variable `i` needs to be preserved and updated. This idea of a reference function that wraps local variable reference is called `Closure` as an function closes over the variables. 
+
+We accomplish this by creating an `Environment` - `self.closure` in below snippet - that captures the state of the function when it is declared. And when the function is called we refer to this environment instead of the global environment. 
+
+```
+class LoxFunction(LoxCallable):
+    def __init__(self, declaration: Function, closure: Environment) -> None:
+        self.declaration: Function = declaration
+        self.closure: Environment = closure
+
+    def call(self, interpreter: Interpreter, arguments: List[object]) -> object:
+        environment: Environment = Environment(enclosing=self.closure)
+        for parameter, argument in zip(self.declaration.params, arguments):
+            environment.define(parameter.lexeme, argument)
+
+        try:
+            interpreter.execute_block(self.declaration.body, environment)
+        except Return as return_signal:
+            return return_signal.value
+        return None
+```
+
+That is all I have to say about that.
+
